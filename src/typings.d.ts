@@ -151,7 +151,7 @@ type FilterGroups = "exclude" | "include";
 /**
  * Supprted filter operators
  */
-type FilterOperator = "exists" | "not_exists" | "=" | ">" | "<" | ">=" | "<=" | "contains" | "matches";
+type FilterOperator = "exists" | "not_exists" | "=" | "!=" | ">" | "<" | ">=" | "<=" | "contains" | "not_contains" | "matches" | "not_matches";
 
 /**
  * Allowed filter value types
