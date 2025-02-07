@@ -34,10 +34,6 @@ jobs:
       - name: Test
         run: npm run test+coverage
         
-      - name: Coveralls
-        uses: coverallsapp/github-action@v1.1.2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   update_release_draft:
     needs: validate_release
