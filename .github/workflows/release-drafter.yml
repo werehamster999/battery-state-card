@@ -22,7 +22,7 @@ jobs:
       - name: NodeJS setup
         uses: actions/setup-node@v2
         with:
-          node-version: 14.5
+          node-version: 15
           registry-url: https://registry.npmjs.org/
 
       - name: Installing dependencies
