@@ -7,7 +7,9 @@ const operatorHandlers: { [key in FilterOperator]: (val: FilterValueType, expect
     "exists": val => val !== undefined,
     "not_exists": val => val === undefined,
     "contains": (val, searchString) => val !== undefined && val !== null && val.toString().indexOf(searchString!.toString()) != -1,
+    "not_contains": (val, searchString) => val !== undefined && val !== null && val.toString().indexOf(searchString!.toString()) == -1,
     "=": (val, expectedVal) => isNumber(val) || isNumber(expectedVal) ? toNumber(val) == toNumber(expectedVal) : val == expectedVal,
+    "!=": (val, expectedVal) => isNumber(val) || isNumber(expectedVal) ? toNumber(val) != toNumber(expectedVal) : val != expectedVal,
     ">": (val, expectedVal) => toNumber(val) > toNumber(expectedVal),
     "<": (val, expectedVal) => toNumber(val) < toNumber(expectedVal),
     ">=": (val, expectedVal) => toNumber(val) >= toNumber(expectedVal),
@@ -25,6 +27,20 @@ const operatorHandlers: { [key in FilterOperator]: (val: FilterValueType, expect
         }
 
         return exp ? exp.test(val.toString()) : val === pattern;
+    },
+    "not_matches": (val, pattern) => {
+        if (val === undefined || val === null) {
+            return false;
+        }
+
+        pattern = pattern!.toString()
+
+        let exp = getRegexFromString(pattern);
+        if (!exp && pattern.includes("*")) {
+            exp = new RegExp("^" + pattern.replace(/\*/g, ".*") + "$");
+        }
+
+        return exp ? !exp.test(val.toString()) : val !== pattern;
     }
 }
 
