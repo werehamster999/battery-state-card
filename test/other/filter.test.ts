@@ -147,8 +147,8 @@ describe("Filter", () => {
         ["44", <FilterOperator>"<", "44.1", true],
         ["44", <FilterOperator>"<", "44,1", true],
         
-    ])("$state compared by $operator to $value is $expectedIsVlid", ({state: string | undefined, operator: FilterOperator | undefined, value: string | number, expectedIsVlid: boolean}) => {
-        test("matching functions return correct results",() => {
+    ])('$state compared by $operator to $value is $expectedIsVlid', (state: string | undefined, operator: FilterOperator | undefined, value: string | number, expectedIsVlid: boolean) => {
+        test('matching functions return correct results',() => {
             const hassMock = new HomeAssistantMock();
 
             const entity = hassMock.addEntity("Entity name", "ok", { battery_level: state });
