@@ -5,7 +5,7 @@ import { DeviceRegistryEntry, EntityRegistryDisplayEntry, HomeAssistantExt, Area
 import { throttledCall } from "../src/utils";
 
 /**
- * Removing all custome elements
+ * Removing all custom elements
  */
 afterEach(() => {
     ["battery-state-card", "battery-state-entity"].forEach(cardTagName => Array
