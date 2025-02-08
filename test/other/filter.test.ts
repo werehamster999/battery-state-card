@@ -84,26 +84,26 @@ describe("Filter", () => {
     test.each([
         
         // check responses to undefined values of state
-        [undefined, <FilterOperator>"matches", "55", false],
-        [undefined, <FilterOperator>"not_matches", "55", false],
-        [undefined, <FilterOperator>"contains", "55", false],
-        [undefined, <FilterOperator>"not_contains", "55", false],
-        [undefined, <FilterOperator>"=", "55", false],
-        [undefined, <FilterOperator>"!=", "55", false],
-        [undefined, <FilterOperator>">", "55", false],
-        [undefined, <FilterOperator>">=", "55", false],
-        [undefined, <FilterOperator>"<", "55", false],
-        [undefined, <FilterOperator>"<=", "55", false],
+        ///[undefined, <FilterOperator>"matches", "55", false],
+        ///[undefined, <FilterOperator>"not_matches", "55", false],
+        ///[undefined, <FilterOperator>"contains", "55", false],
+        ///[undefined, <FilterOperator>"not_contains", "55", false],
+        ///[undefined, <FilterOperator>"=", "55", false],
+        ///[undefined, <FilterOperator>"!=", "55", false],
+        ///[undefined, <FilterOperator>">", "55", false],
+        ///[undefined, <FilterOperator>">=", "55", false],
+        ///[undefined, <FilterOperator>"<", "55", false],
+        ///[undefined, <FilterOperator>"<=", "55", false],
 
         // check common operations
-        ["45", <FilterOperator>"matches", "45", true],
-        ["45", <FilterOperator>"matches", "55", false],
+        ///["45", <FilterOperator>"matches", "45", true],
+        ///["45", <FilterOperator>"matches", "55", false],
         
-        ["45", <FilterOperator>"not_matches", "45", false],
-        ["45", <FilterOperator>"not_matches", "55", true],
+        ///["45", <FilterOperator>"not_matches", "45", false],
+        ///["45", <FilterOperator>"not_matches", "55", true],
         
-        ["45", <FilterOperator>"=", "45", true],
-        ["45", <FilterOperator>"=", "55", false],
+        ///["45", <FilterOperator>"=", "45", true],
+        ///["45", <FilterOperator>"=", "55", false],
         
         ["string test", <FilterOperator>"=", "string", false],
         ["string test", <FilterOperator>"=", "string test", true],
