@@ -81,29 +81,33 @@ describe("Filter", () => {
         expect(isValid).toBe(expectedIsVlid);
     })
 
-    test.each([
+    describe.each([
+  [1, 1, 2],
+  [1, 2, 3],
+  [2, 1, 3],
+    ])('.add(%i, %i)', (a, b, expected) => test.each([
         
         // check responses to undefined values of state
-        ///[undefined, <FilterOperator>"matches", "55", false],
-        ///[undefined, <FilterOperator>"not_matches", "55", false],
-        ///[undefined, <FilterOperator>"contains", "55", false],
-        ///[undefined, <FilterOperator>"not_contains", "55", false],
-        ///[undefined, <FilterOperator>"=", "55", false],
-        ///[undefined, <FilterOperator>"!=", "55", false],
-        ///[undefined, <FilterOperator>">", "55", false],
-        ///[undefined, <FilterOperator>">=", "55", false],
-        ///[undefined, <FilterOperator>"<", "55", false],
-        ///[undefined, <FilterOperator>"<=", "55", false],
+        [undefined, <FilterOperator>"matches", "55", false],
+        [undefined, <FilterOperator>"not_matches", "55", false],
+        [undefined, <FilterOperator>"contains", "55", false],
+        [undefined, <FilterOperator>"not_contains", "55", false],
+        [undefined, <FilterOperator>"=", "55", false],
+        [undefined, <FilterOperator>"!=", "55", false],
+        [undefined, <FilterOperator>">", "55", false],
+        [undefined, <FilterOperator>">=", "55", false],
+        [undefined, <FilterOperator>"<", "55", false],
+        [undefined, <FilterOperator>"<=", "55", false],
 
         // check common operations
-        ///["45", <FilterOperator>"matches", "45", true],
-        ///["45", <FilterOperator>"matches", "55", false],
+        ["45", <FilterOperator>"matches", "45", true],
+        ["45", <FilterOperator>"matches", "55", false],
         
-        ///["45", <FilterOperator>"not_matches", "45", false],
-        ///["45", <FilterOperator>"not_matches", "55", true],
+        ["45", <FilterOperator>"not_matches", "45", false],
+        ["45", <FilterOperator>"not_matches", "55", true],
         
-        ///["45", <FilterOperator>"=", "45", true],
-        ///["45", <FilterOperator>"=", "55", false],
+        ["45", <FilterOperator>"=", "45", true],
+        ["45", <FilterOperator>"=", "55", false],
         
         ["string test", <FilterOperator>"=", "string", false],
         ["string test", <FilterOperator>"=", "string test", true],
@@ -147,15 +151,17 @@ describe("Filter", () => {
         ["44", <FilterOperator>"<", "44.1", true],
         ["44", <FilterOperator>"<", "44,1", true],
         
-    ])("matching functions return correct results", (state: string | undefined, operator: FilterOperator | undefined, value: string | number, expectedIsVlid: boolean) => {
-        const hassMock = new HomeAssistantMock();
+    ])("%state compared by %operator to %value", (state: string | undefined, operator: FilterOperator | undefined, value: string | number, expectedIsVlid: boolean) => {
+        test("matching functions return correct results",() => {
+            const hassMock = new HomeAssistantMock();
 
-        const entity = hassMock.addEntity("Entity name", "ok", { battery_level: state });
+            const entity = hassMock.addEntity("Entity name", "ok", { battery_level: state });
 
-        const filter = new Filter({ name: "attributes.battery_level", operator, value });
-        const isValid = filter.isValid(entity);
+            const filter = new Filter({ name: "attributes.battery_level", operator, value });
+            const isValid = filter.isValid(entity);
 
-        expect(isValid).toBe(expectedIsVlid);
+            expect(isValid).toBe(expectedIsVlid);
+        })
     })
     
     test.each([
