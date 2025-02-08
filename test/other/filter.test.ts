@@ -82,11 +82,7 @@ describe("Filter", () => {
     })
 
     describe.each([
-  [1, 1, 2],
-  [1, 2, 3],
-  [2, 1, 3],
-    ])('.add(%i, %i)', (a, b, expected) => test.each([
-        
+       
         // check responses to undefined values of state
         [undefined, <FilterOperator>"matches", "55", false],
         [undefined, <FilterOperator>"not_matches", "55", false],
