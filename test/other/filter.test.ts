@@ -147,7 +147,7 @@ describe("Filter", () => {
         ["44", <FilterOperator>"<", "44.1", true],
         ["44", <FilterOperator>"<", "44,1", true],
         
-    ])("${state} compared by ${operator} to $Pvalue} is expected", (state: string | undefined, operator: FilterOperator | undefined, value: string | number, expectedIsVlid: boolean) => {
+    ])("$state compared by $operator to $value is expected", (state: string | undefined, operator: FilterOperator | undefined, value: string | number, expectedIsVlid: boolean) => {
         test("matching functions return correct results",() => {
             const hassMock = new HomeAssistantMock();
 
