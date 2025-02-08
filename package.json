@@ -42,7 +42,8 @@
         ],
         "globals": {
           "ts-jest": {
-            "isolatedModules": true
+            "isolatedModules": true,
+             "verbose": true
           }
         },
         "coveragePathIgnorePatterns": [
