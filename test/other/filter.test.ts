@@ -109,7 +109,7 @@ describe("Filter", () => {
         ["string test", <FilterOperator>"=", "string test", true],
         
         ["45", <FilterOperator>"!=", "45", false],
-        ["45", <FilterOperator>"=", "55", true],
+        ["45", <FilterOperator>"!=", "55", true],
              
         ["string test", <FilterOperator>"!=", "string", true],
         ["string test", <FilterOperator>"!=", "string test", false],
