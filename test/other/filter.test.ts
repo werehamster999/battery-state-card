@@ -51,7 +51,7 @@ describe("Filter", () => {
         ["Bedroom motion", "/BEDroom_motion/", false],
         ["Bedroom motion", "/BEDroom_motion/i", true],
         ["sensor.bot_outside_power_battery", "sensor.*bot_*battery", true],
-    ])("matches func returns correct results", (entityName: string, filterValue: string, expectedIsVlid: boolean) => {
+    ])("matches func returns correct results", (entityName: string, filterValue: string, expectedIsValid: boolean) => {
         const hassMock = new HomeAssistantMock();
 
         const entity = hassMock.addEntity(entityName, "90");
@@ -60,7 +60,7 @@ describe("Filter", () => {
         const isValid = filter.isValid(entity);
 
         expect(filter.is_permanent).toBeTruthy();
-        expect(isValid).toBe(expectedIsVlid);
+        expect(isValid).toBe(expectedIsValid);
     })
 
     test.each([
@@ -69,7 +69,7 @@ describe("Filter", () => {
         ["attributes.battery_state", { battery_level: "45" }, false, <FilterOperator>"exists"],
         ["attributes.battery_level", { battery_level: "45" }, false, <FilterOperator>"not_exists"],
         ["attributes.battery_state", { battery_level: "45" }, true, <FilterOperator>"not_exists"],
-    ])("exists/not_exists func returns correct results", (filterName: string, attribs: IMap<string>, expectedIsVlid: boolean, operator: FilterOperator | undefined) => {
+    ])("exists/not_exists func returns correct results", (filterName: string, attribs: IMap<string>, expectedIsValid: boolean, operator: FilterOperator | undefined) => {
         const hassMock = new HomeAssistantMock();
 
         const entity = hassMock.addEntity("Entity name", "90", attribs);
@@ -78,7 +78,7 @@ describe("Filter", () => {
         const isValid = filter.isValid(entity);
 
         expect(filter.is_permanent).toBeTruthy();
-        expect(isValid).toBe(expectedIsVlid);
+        expect(isValid).toBe(expectedIsValid);
     })
 
     describe.each([
@@ -147,7 +147,7 @@ describe("Filter", () => {
         ["44", <FilterOperator>"<", "44.1", true],
         ["44", <FilterOperator>"<", "44,1", true],
         
-    ])('%s compared by %s to %s is %s', (state: string | undefined, operator: FilterOperator | undefined, value: string | number, expectedIsVlid: boolean) => {
+    ])('%s compared by %s to %s is %s', (state: string | undefined, operator: FilterOperator | undefined, value: string | number, expectedIsValid: boolean) => {
         test('matching functions return correct results',() => {
             const hassMock = new HomeAssistantMock();
 
@@ -156,11 +156,11 @@ describe("Filter", () => {
             const filter = new Filter({ name: "attributes.battery_level", operator, value });
             const isValid = filter.isValid(entity);
 
-            expect(isValid).toBe(expectedIsVlid);
+            expect(isValid).toBe(expectedIsValid);
         })
     })
     
-    test.each([
+    describe.each([
         [44, <FilterOperator>"<", "44,1", true],
         [44, <FilterOperator>">", "44.1", false],
         [true, <FilterOperator>"=", "false", false],
@@ -171,15 +171,17 @@ describe("Filter", () => {
         [true, undefined, false, false],
         [true, undefined, null, false],
         [null, undefined, null, true],
-    ])("non mixed types of values", (attributeValue: FilterValueType, operator: FilterOperator | undefined, value: FilterValueType, expectedIsVlid: boolean) => {
-        const hassMock = new HomeAssistantMock();
-
-        const entity = hassMock.addEntity("Entity name", "ok", { entity_attrib: attributeValue });
-
-        const filter = new Filter({ name: "attributes.entity_attrib", operator, value });
-        const isValid = filter.isValid(entity);
-
-        expect(isValid).toBe(expectedIsVlid);
+    ])('%s compared by %s to %s is %s', (attributeValue: FilterValueType, operator: FilterOperator | undefined, value: string | number, expectedIsValid: boolean) => {
+        test("non mixed types of values", () => {
+            const hassMock = new HomeAssistantMock();
+    
+            const entity = hassMock.addEntity("Entity name", "ok", { entity_attrib: attributeValue });
+    
+            const filter = new Filter({ name: "attributes.entity_attrib", operator, value });
+            const isValid = filter.isValid(entity);
+    
+            expect(isValid).toBe(expectedIsValid);
+        })
     })
 
     test.each([
