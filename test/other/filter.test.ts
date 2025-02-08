@@ -69,12 +69,12 @@ describe("Filter", () => {
         ["attributes.battery_state", { battery_level: "45" }, false, <FilterOperator>"exists"],
         ["attributes.battery_level", { battery_level: "45" }, false, <FilterOperator>"not_exists"],
         ["attributes.battery_state", { battery_level: "45" }, true, <FilterOperator>"not_exists"],
-    ])("exists/not_exists func returns correct results", (fileterName: string, attribs: IMap<string>, expectedIsVlid: boolean, operator: FilterOperator | undefined) => {
+    ])("exists/not_exists func returns correct results", (filterName: string, attribs: IMap<string>, expectedIsVlid: boolean, operator: FilterOperator | undefined) => {
         const hassMock = new HomeAssistantMock();
 
         const entity = hassMock.addEntity("Entity name", "90", attribs);
 
-        const filter = new Filter({ name: fileterName, operator });
+        const filter = new Filter({ name: filterName, operator });
         const isValid = filter.isValid(entity);
 
         expect(filter.is_permanent).toBeTruthy();
@@ -82,32 +82,71 @@ describe("Filter", () => {
     })
 
     test.each([
+        
+        // check responses to undefined values of state
+        [undefined, <FilterOperator>"matches", "55", false],
+        [undefined, <FilterOperator>"not_matches", "55", false],
+        [undefined, <FilterOperator>"contains", "55", false],
+        [undefined, <FilterOperator>"not_contains", "55", false],
+        [undefined, <FilterOperator>"=", "55", false],
+        [undefined, <FilterOperator>"!=", "55", false],
+        [undefined, <FilterOperator>">", "55", false],
+        [undefined, <FilterOperator>">=", "55", false],
+        [undefined, <FilterOperator>"<", "55", false],
+        [undefined, <FilterOperator>"<=", "55", false],
+
+        // check common operations
         ["45", <FilterOperator>"matches", "45", true],
         ["45", <FilterOperator>"matches", "55", false],
-        [undefined, <FilterOperator>"matches", "55", false],
+        
+        ["45", <FilterOperator>"not_matches", "45", false],
+        ["45", <FilterOperator>"not_matches", "55", true],
+        
         ["45", <FilterOperator>"=", "45", true],
-        ["45", <FilterOperator>"=", "45", true],
+        ["45", <FilterOperator>"=", "55", false],
+        
         ["string test", <FilterOperator>"=", "string", false],
         ["string test", <FilterOperator>"=", "string test", true],
+        
+        ["45", <FilterOperator>"!=", "45", false],
+        ["45", <FilterOperator>"=", "55", true],
+             
+        ["string test", <FilterOperator>"!=", "string", true],
+        ["string test", <FilterOperator>"!=", "string test", false],
+         
         ["45", <FilterOperator>">", "44", true],
         ["45", <FilterOperator>">", "45", false],
-        ["45", <FilterOperator>">=", "45", true],
+        
         ["45", <FilterOperator>">=", "44", true],
+        ["45", <FilterOperator>">=", "45", true],
         ["45", <FilterOperator>">=", "46", false],
+        
         ["45", <FilterOperator>"<", "45", false],
         ["45", <FilterOperator>"<", "46", true],
-        ["45", <FilterOperator>"<=", "45", true],
+        
         ["45", <FilterOperator>"<=", "44", false],
+        ["45", <FilterOperator>"<=", "45", true],
         ["45", <FilterOperator>"<=", "46", true],
+        
         ["some longer text", <FilterOperator>"contains", "longer", true],
         ["some longer text", <FilterOperator>"contains", "loonger", false],
-        // decimals
+        
+        ["some longer text", <FilterOperator>"not_contains", "longer", false],
+        ["some longer text", <FilterOperator>"not_contains", "loonger", true],
+        
+        // decimals 
         ["45.0", <FilterOperator>"=", "45", true],
         ["45,0", <FilterOperator>"=", "45", true],
+
+        ["45.0", <FilterOperator>"!=", "45", false],
+        ["45,0", <FilterOperator>"!=", "45", false],
+        
         ["44.1", <FilterOperator>">", "44", true],
         ["44,1", <FilterOperator>">", "44", true],
+        
         ["44", <FilterOperator>"<", "44.1", true],
         ["44", <FilterOperator>"<", "44,1", true],
+        
     ])("matching functions return correct results", (state: string | undefined, operator: FilterOperator | undefined, value: string | number, expectedIsVlid: boolean) => {
         const hassMock = new HomeAssistantMock();
 
@@ -118,6 +157,7 @@ describe("Filter", () => {
 
         expect(isValid).toBe(expectedIsVlid);
     })
+    
     test.each([
         [44, <FilterOperator>"<", "44,1", true],
         [44, <FilterOperator>">", "44.1", false],
