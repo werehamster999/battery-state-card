@@ -27,13 +27,13 @@ jobs:
 
       - name: Installing dependencies
         run: npm ci
-
-      - name: Test
-        run: npm run test
         
       - name: Build release
         run: npm run release
-  
+        
+      - name: Test
+        run: npm run test
+
 
   update_release_draft:
     needs: validate_release
