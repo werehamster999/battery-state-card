@@ -10,10 +10,10 @@ const operatorHandlers: { [key in FilterOperator]: (val: FilterValueType, expect
     "not_contains": (val, searchString) => val !== undefined && val !== null && val.toString().indexOf(searchString!.toString()) == -1,
     "=": (val, expectedVal) => isNumber(val) && isNumber(expectedVal) ? toNumber(val) == toNumber(expectedVal) : val == expectedVal,
     "!=": (val, expectedVal) => isNumber(val) && isNumber(expectedVal) ? toNumber(val) != toNumber(expectedVal) : val != expectedVal,
-    ">": (val, expectedVal) => isNumber(val) && isNumber(expectedVal) ? toNumber(val) > toNumber(expectedVal) : False,
-    "<": (val, expectedVal) => isNumber(val) && isNumber(expectedVal) ? toNumber(val) < toNumber(expectedVal) : False,
-    ">=": (val, expectedVal) => isNumber(val) && isNumber(expectedVal) ? toNumber(val) >= toNumber(expectedVal) : False,
-    "<=": (val, expectedVal) => isNumber(val) && isNumber(expectedVal) ? toNumber(val) <= toNumber(expectedVal) : False,
+    ">": (val, expectedVal) => isNumber(val) && isNumber(expectedVal) ? toNumber(val) > toNumber(expectedVal) : false,
+    "<": (val, expectedVal) => isNumber(val) && isNumber(expectedVal) ? toNumber(val) < toNumber(expectedVal) : false,
+    ">=": (val, expectedVal) => isNumber(val) && isNumber(expectedVal) ? toNumber(val) >= toNumber(expectedVal) : false,
+    "<=": (val, expectedVal) => isNumber(val) && isNumber(expectedVal) ? toNumber(val) <= toNumber(expectedVal) : false,
     "matches": (val, pattern) => {
         if (val === undefined || val === null) {
             return false;
